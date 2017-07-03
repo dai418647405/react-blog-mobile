@@ -11,8 +11,7 @@ var webpack = require('webpack');
 module.exports = {
     // 项目入口. 可以直接用文件夹名称, 默认会找 index.js; 也可以确定是哪个文件名字
     entry: {
-        app: './src/app.js',
-        vendor: ['react']
+        app: './src/app.js'
     },
     // 项目出口. 让 webpack 把处理完成的文件放在哪里
     output: {
@@ -50,7 +49,7 @@ module.exports = {
             test: /\.(png|jpg)$/,
             loader: 'url?limit=40000'
         }, {
-            test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+            test: /\.(png|jpg|jpeg|gif)$/,
             loader: 'file-loader'
             }]
     },
@@ -80,7 +79,6 @@ module.exports = {
             template: 'index.html',
             chunks: ['app'],
             title: 'Hello World app'
-        }),
-        new webpack.optimize.CommonsChunkPlugin('vendor',  'vendor.js')
+        })
     ]
 };

@@ -1,5 +1,5 @@
 {
-  "name": "react-blog",
+  "name": "react-blog-mobile",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
@@ -38,7 +38,6 @@
     "antd": "^2.10.0",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
-    "react-lz-editor": "^0.10.13",
     "react-router": "^3.0.3"
   }
 }

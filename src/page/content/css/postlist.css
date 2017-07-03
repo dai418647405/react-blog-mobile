@@ -12,24 +12,24 @@
     background-color: white;
 }
 
-.card-container > .ant-tabs-card > .ant-tabs-content {
+.card-container-mobile > .ant-tabs-card > .ant-tabs-content {
     /*height: 120px;*/
     margin-top: -16px;
 }
 
-.card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
+.card-container-mobile > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
     background: #fff;
     padding: 0;
 }
 
-.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+.card-container-mobile > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
     border-color: transparent;
-    margin-right: 2%;
+    margin-right: 0;
     width: 100px;
     text-align: center;
 }
 
-.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+.card-container-mobile > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
     border-color: #fff;
 }
 

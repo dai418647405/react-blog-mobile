@@ -1,6 +1,6 @@
-import { Table, Button } from 'antd';
+import { Table } from 'antd';
 import React, {Component, PropTypes} from 'react';
-import { Tabs, Switch} from 'antd';
+import { Tabs } from 'antd';
 import './css/postlist.css';
 import Req from '../../Req';
 import Util from '../../Util';
@@ -8,26 +8,22 @@ import Util from '../../Util';
 const TabPane = Tabs.TabPane;
 
 const columns = [{
-    title: <h3>主题</h3>,
+    title: <h6>主题</h6>,
     dataIndex: 'title',
     key: 'title',
-    // width: 600,
-    render: (text, record) => <h3><a target="_blank" href={record.link}>{text}</a></h3>
+    width: '60%',
+    render: (text, record) => <h4><a target="_blank" href={record.link}>{text}</a></h4>
 }, {
-    title: <h3>回复/浏览</h3>,
+    title: <h6>回复/浏览</h6>,
     dataIndex: 'replyCount',
     key: 'replyCount/pageViewCount',
-    render: (text, record) => <h3>{text} / {record.pageViewCount}</h3>
+    width: '25%',
+    render: (text, record) => <h6>{text}/{record.pageViewCount}</h6>
 }, {
-    title: <h3>最后回复时间</h3>,
+    title: <h6>最后回复</h6>,
     dataIndex: 'lastReplyTime',
     key: 'lastReplyTime',
-    render: text => <h3>{Util.format(new Date(text), 'yyyy-MM-dd HH:mm')}</h3>
-}, {
-    title: <h3>发表时间</h3>,
-    dataIndex: 'publishTime',
-    key: 'publishTime',
-    render: text => <h3>{Util.format(new Date(text), 'yyyy-MM-dd HH:mm')}</h3>
+    render: text => <h6>{Util.format(new Date(text), 'HH:mm')}</h6>
 }];
 
 class PostList extends Component {
@@ -48,19 +44,19 @@ class PostList extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount');
+        // console.log('componentDidMount');
         this.loadPostList(this.state.curTopicId, this.state.curSortType, this.state.pagination);
     }
 
     handlePageChange(pagination) {
-        console.log('handlePageChange start, pagination=' + pagination);
+        // console.log('handlePageChange start, pagination=' + pagination);
         const pager = pagination;
         this.loadPostList(this.state.curTopicId, this.state.curSortType, pagination);
-        console.log('handlePageChange end');
+        // console.log('handlePageChange end');
     };
 
     handleTabChange(activeKey, type) {
-        console.log('handleTabChange start: activeKey=' + activeKey + '&type=' + type);
+        // console.log('handleTabChange start: activeKey=' + activeKey + '&type=' + type);
         let curTopicId = this.state.curTopicId;
         let curSortType = this.state.curSortType;
         let pager = this.state.pagination;
@@ -74,11 +70,11 @@ class PostList extends Component {
             curSortType = activeKey.split('-')[1];
         }
         this.loadPostList(curTopicId, curSortType, pager);
-        console.log('handleTabChange end');
+        // console.log('handleTabChange end');
     }
 
     loadPostList(curTopicId, curSortType, pager) {
-        console.log('loadPostList start: curTopicId=' + curTopicId + '&curSortType=' + curSortType + '&pager=' + pager);
+        // console.log('loadPostList start: curTopicId=' + curTopicId + '&curSortType=' + curSortType + '&pager=' + pager);
         this.setState({ loading: true });
         const url = '/api/hupu/list';
         const params = {
@@ -91,7 +87,7 @@ class PostList extends Component {
         Req.get(url, params ,data => {
             // console.log('result =' + data.toSource());
             if (data.code == 200) {
-                console.log('data from server' + data.data.dataList);
+                // console.log('data from server' + data.data.dataList);
                 this.setState({data : data.data.dataList, pagination : data.data.pager, loading: false});
             } else {
                 this.setState({pagination : pager, loading: false});
@@ -101,7 +97,7 @@ class PostList extends Component {
 
     render() {
         return (
-        <div className="card-container">
+        <div className="card-container-mobile">
             <Tabs type="card" defaultActiveKey="topic-1" onChange={(activeKey) => this.handleTabChange(activeKey, 1)}>
                 <TabPane tab="湿乎乎" key="topic-1" />
                 <TabPane tab="步行街" key="topic-2" />
@@ -118,7 +114,7 @@ class PostList extends Component {
                 <TabPane tab="过去七天最热" key="sortType-5" />
                 <TabPane tab="历史最热" key="sortType-6" />
             </Tabs>
-            <div style={{background: 'white'}}>
+            <div style={{background: 'white', fontSize:'25px'}}>
                 <Table columns={columns}
                        size='small'
                        rowKey={record => record.articleId}
@@ -128,7 +124,7 @@ class PostList extends Component {
                        onChange={this.handlePageChange.bind(this)}
                 />
             </div>
-            {console.log('render pagination:' + this.state.pagination)}
+            {/*{console.log('render pagination:' + this.state.pagination)}*/}
         </div>
         );
     }
