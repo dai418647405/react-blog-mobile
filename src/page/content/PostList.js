@@ -12,7 +12,7 @@ const columns = [{
     dataIndex: 'title',
     key: 'title',
     width: '60%',
-    render: (text, record) => <h4><a target="_blank" href={record.link}>{text}</a></h4>
+    render: (text, record) => <h4><a href={record.link}>{text}</a></h4>
 }, {
     title: <h6>回复/浏览</h6>,
     dataIndex: 'replyCount',
@@ -26,14 +26,22 @@ const columns = [{
     render: text => <h6>{Util.format(new Date(text), 'HH:mm')}</h6>
 }];
 
+let topicDefaultActiveKey = 'topic-1';
+let sortTypeDefaultActiveKey = 'sortType-3';
 class PostList extends Component {
     constructor(props) {
         super(props);
+        const userHistory = JSON.parse(sessionStorage.getItem('userHistory'));
+        if (userHistory != null) {
+            userHistory.pagination.size = 'middle';
+            topicDefaultActiveKey = 'topic-' + userHistory.curTopicId;
+            sortTypeDefaultActiveKey = 'sortType-' + userHistory.curSortType;
+        }
         this.state = {
-            curTopicId : 1,
-            curSortType : 3,
+            curTopicId : userHistory != null ? userHistory.curTopicId : 1,
+            curSortType : userHistory != null ? userHistory.curSortType : 3,
             data: [],
-            pagination: {
+            pagination: userHistory != null ? userHistory.pagination : {
                 current : 1,
                 pageSize : 15,
                 total:200,
@@ -93,12 +101,18 @@ class PostList extends Component {
                 this.setState({pagination : pager, loading: false});
             }
         });
+        const userHistory = {
+            curTopicId : curTopicId,
+            curSortType : curSortType,
+            pagination : pager
+        };
+        sessionStorage.setItem('userHistory', JSON.stringify(userHistory));
     }
 
     render() {
         return (
         <div className="card-container-mobile">
-            <Tabs type="card" defaultActiveKey="topic-1" onChange={(activeKey) => this.handleTabChange(activeKey, 1)}>
+            <Tabs type="card" defaultActiveKey={topicDefaultActiveKey} onChange={(activeKey) => this.handleTabChange(activeKey, 1)}>
                 <TabPane tab="湿乎乎" key="topic-1" />
                 <TabPane tab="步行街" key="topic-2" />
                 <TabPane tab="足球区" key="topic-3" />
@@ -106,7 +120,7 @@ class PostList extends Component {
                 <TabPane tab="电竞区" key="topic-5" />
                 <TabPane tab="ACG区" key="topic-6" />
             </Tabs>
-            <Tabs defaultActiveKey="sortType-3" className="sort_card_bar" onChange={(activeKey) => this.handleTabChange(activeKey, 2)}>
+            <Tabs defaultActiveKey={sortTypeDefaultActiveKey} className="sort_card_bar" onChange={(activeKey) => this.handleTabChange(activeKey, 2)}>
                 <TabPane tab="今日最热" key="sortType-3" />
                 <TabPane tab="过去三天最热" key="sortType-4" />
                 <TabPane tab="最新发表" key="sortType-2" />
